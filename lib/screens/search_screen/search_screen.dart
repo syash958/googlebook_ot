@@ -8,7 +8,7 @@ class SearchScreen extends StatefulWidget {
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
-
+//flutter build apk --split-per-abi
 TextEditingController _searchController = TextEditingController();
 
 class _SearchScreenState extends State<SearchScreen> {
@@ -51,26 +51,29 @@ class _SearchScreenState extends State<SearchScreen> {
         child: Column(
           children: [
             const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                controller: _searchController,
-                decoration: const InputDecoration(
-                  suffixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                    borderSide: BorderSide(width: 1, color: Colors.grey),
+            SizedBox(
+              height: 50,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: _searchController,
+                  decoration: const InputDecoration(
+                    suffixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                      borderSide: BorderSide(width: 1, color: Colors.grey),
+                    ),
+                    label: Text("Enter Title To Search")
                   ),
-                  label: Text("Enter Title To Search")
+                  onChanged: (searchedText) {
+                    String title = _searchController.text;
+                    if (title.isNotEmpty) {
+                      setState(() {
+                        getProductsByQuery({'q': 'intitle:$title'});
+                      });
+                    }
+                  },
                 ),
-                onChanged: (searchedText) {
-                  String title = _searchController.text;
-                  if (title.isNotEmpty) {
-                    setState(() {
-                      getProductsByQuery({'q': 'intitle:$title'});
-                    });
-                  }
-                },
               ),
             ),
             FutureBuilder(
@@ -135,7 +138,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 } else {
                   return const Center(
                       child: CircularProgressIndicator(
-                    color: Colors.white,
+                    color: Colors.blue,
                   ));
                 }
               },
